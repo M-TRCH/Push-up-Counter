@@ -44,7 +44,7 @@ void info_setup()
 {
     setText(30,   80, BLACK, WHITE, 2); tft.print(" ABILITY : ");
     setText(30,  100, RED, BLACK, 2); tft.print("___________");
-    setText(102, 140,   RED, BLACK, 2); tft.print("count/sec");
+    setText(102, 140, RED, BLACK, 2); tft.print("count/sec");
     setText(30,  140, RED, BLACK, 2); tft.print("0.00");
     setText(30,  120, BLACK, WHITE, 2); tft.print("  COUNT  : ");
     setText(30,  165, BLACK,  CYAN, 1); tft.print("FIRMWARE UPDATE:v1.0/14_08_20");
@@ -56,7 +56,7 @@ void info_update()
 }
 void info_update(int range)
 {
-         if(range <  1){ setText(30,  100, RED, BLACK, 2); tft.print("PERFECT"); }
-    else if(range <  2){ setText(30,  100, RED, BLACK, 2); tft.print("GOOD"); }
-    else if(range <  3){ setText(30,  100, RED, BLACK, 2); tft.print("FAIR"); }
+         if(range <  1){ setText(30,  100, RED, BLACK, 2); tft.print("PERFECT    "); }
+    else if(range <  2){ setText(30,  100, RED, BLACK, 2); tft.print("GOOD       "); }
+    else if(range <  3){ setText(30,  100, RED, BLACK, 2); tft.print("FAIR       "); }
 }

@@ -44,14 +44,14 @@ boolean debounce(uint8_t port)
   
   if(digitalRead(port) == LOW)
   {
-    delay(1);
+    delayMicroseconds(100);
     if(digitalRead(port) == LOW)
     {
       while(digitalRead(port) == LOW)
       {
-        if(state == 0)
+        if(state == 1)
         {
-          clock_update(); delay(100);
+          update(); display(); delay(100);
         }
       }
       status = HIGH;
