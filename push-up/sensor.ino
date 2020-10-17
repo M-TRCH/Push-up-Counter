@@ -1,7 +1,12 @@
 void count_add()
 {
   count++;
-  if(count > 99) count = 0;
+  if(count > 99) count_reset();
+}
+void count_subtract()
+{
+  count--;
+  if(count < 0) count_reset();
 }
 void count_reset()
 {
@@ -41,17 +46,19 @@ void distance_display()
 boolean debounce(uint8_t port)
 {
   boolean status = LOW;
+  uint8_t interval = 50;
+  if(port == sw_port_3) interval = 5; 
   
   if(digitalRead(port) == LOW)
   {
-    delayMicroseconds(100);
+    delayMicroseconds(interval);
     if(digitalRead(port) == LOW)
     {
       while(digitalRead(port) == LOW)
       {
         if(state == 1)
         {
-          update(); display(); delay(100);
+          update(); display(); delay(50);
         }
       }
       status = HIGH;
@@ -62,8 +69,8 @@ boolean debounce(uint8_t port)
 void sensor_update()
 {
    int dis = distance();
-   int max_tolerance = 3;
-   int min_tolerance = 3;
+   int max_tolerance = 4;
+   int min_tolerance = 2;
    
    if(sensor_state == 0)
    {
@@ -78,12 +85,14 @@ void sensor_update()
       if(dis > maxOut-max_tolerance)
       {
         info_update(ablity);
+        sound(true);
         count_add();
         sensor_state--;
       }
    }
 }
-
-
-
-   
+void sound(bool status)
+{
+  if(status)  analogWrite(buzzer_port,   5); // sound on
+  else        analogWrite(buzzer_port, 255); // sound off
+}   

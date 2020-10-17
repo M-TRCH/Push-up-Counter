@@ -47,7 +47,7 @@ void info_setup()
     setText(102, 140, RED, BLACK, 2); tft.print("count/sec");
     setText(30,  140, RED, BLACK, 2); tft.print("0.00");
     setText(30,  120, BLACK, WHITE, 2); tft.print("  COUNT  : ");
-    setText(30,  165, BLACK,  CYAN, 1); tft.print("FIRMWARE UPDATE:v1.0/14_08_20");
+    setText(30,  165, BLACK,  CYAN, 1); tft.print("FIRMWARE UPDATE:v1.1/14_10_20");
 }
 void info_update()
 {
