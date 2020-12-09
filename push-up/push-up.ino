@@ -6,9 +6,6 @@
 VL53L0X sensor;
 MCUFRIEND_kbv tft;
 //------------------------ class ------------------------//                
-
-
-
 #define LCD_CS A3   
 #define LCD_CD A2  
 #define LCD_WR A1  
@@ -25,32 +22,42 @@ MCUFRIEND_kbv tft;
 #define COLOR_p WHITE
 #define COLOR_c YELLOW
 //----------------------- display -----------------------//                
-uint16_t origin_t[] = {180, 250};
+uint16_t origin_t[] = {155, 250};
 unsigned long start_time = 0;
 unsigned long current_time, prev_time, prev_sec, prev_min = 0;
 //------------------------ clock ------------------------//                
-#define sw_port_1 12
-#define sw_port_2 11
-#define sw_port_3 13
-#define sw_port_4 1
-#define buzzer_port 10
+#define sw_port_1 12   // Increase
+#define sw_port_2 11   // Subtract
+#define sw_port_3 13   // Start/Stop
+#define sw_port_4 1    // Reset 
+#define buzzer_port 10 // buzzer
 uint16_t minRange = 150, maxRange = 500;
-uint16_t minOut = 0, maxOut = 7;
-uint16_t origin_p[] = {30, 190};
+uint16_t minOut = 0, maxOut = 6;
+uint16_t origin_p[] = {15, 190};
 boolean rst_sw = false, state3_first = true;
 //------------------------ sensor -----------------------//                
 #define identifier 0x9486
 #define baudrate 9600
-uint16_t origin_c[] = {230, 25};
+uint16_t origin_c[] = {205, 25}; // count
+uint16_t origin_i[] = {15, 80};  // info
+uint16_t origin_s[] = {8, 430};  // switch
 uint8_t state = 3, sensor_state = 0;
 int8_t count = 0, ablity = 0;
-//------------------------ system -----------------------//                
-
+//------------------------ system -----------------------//         
+#define count_activeSound 22
+unsigned long sound_timer     = 0;
+unsigned long sound_totalTime = 0;
+uint16_t sound_delay      = 1500;
+uint16_t sound_interval   = 250;
+boolean  sound_state      = false;
+boolean  sound_on         = true;
+boolean  sound_oneTime    = true;
+//------------------------ sound ------------------------//           
 
 
 void setup() 
 {
-  //Serial.begin(baudrate);  
+  // Serial.begin(baudrate);  
   Wire.begin();
   
   pinMode(sw_port_1, INPUT_PULLUP);
@@ -60,7 +67,8 @@ void setup()
   //------- system setup -------//                
    
   display_init(); 
-  clock_setup();   
+  guide_switch_setup(); // guide display
+  //  clock_setup();   
   //------- Add-on setup -------//                
 }
 void loop() 
@@ -98,7 +106,33 @@ void loop()
   display();
   //------- state output -------//
 
-  
-  sound(false);
+
+  if(sound_state)
+  {
+    if(sound_oneTime)
+    {
+      sound_timer = millis();
+      sound_oneTime = false;
+      sound(sound_on);
+    }
+    if(millis()-sound_timer > sound_interval)
+    {
+      sound_oneTime = true;
+      sound_on = !sound_on;
+      sound_totalTime += sound_interval;
+    }
+    if(sound_totalTime >= sound_delay)
+    {
+      sound_totalTime = 0;
+      sound_oneTime = true;
+      sound_on      = true;
+      sound_state   = false;
+    }
+  }
+  else
+  {
+    sound(false);
+  }
+  //------- sound state -------//
+
 }
-/* 330 lines */

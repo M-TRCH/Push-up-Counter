@@ -1,7 +1,8 @@
 void count_add()
 {
-  count++;
-  if(count > 99) count_reset();
+  count++;   
+  if(count == count_activeSound) sound_state = true;
+  if(count >  99) count_reset();
 }
 void count_subtract()
 {
@@ -28,20 +29,19 @@ int distance()
 {
   int bar = constrain(distance_raw(), minRange, maxRange);
   bar = map(bar, minRange, maxRange, minOut, maxOut);
- 
+  // Serial.println(bar);
   return bar;
 }
 void distance_display()
 {
   int bar = distance();
-       if(bar == maxOut  ){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print(" "); setText(origin_p[0]+200 , origin_p[1], WHITE, BLACK, 5); tft.print("       ");}
-  else if(bar == maxOut-1){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("  "); setText(origin_p[0]+230 , origin_p[1], WHITE, BLACK, 5); tft.print("      ");}
-  else if(bar == maxOut-2){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("   "); setText(origin_p[0]+260 , origin_p[1], WHITE, BLACK, 5); tft.print("     ");}
-  else if(bar == maxOut-3){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("    "); setText(origin_p[0]+290 , origin_p[1], WHITE, BLACK, 5); tft.print("    ");}
-  else if(bar == maxOut-4){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("     "); setText(origin_p[0]+320 , origin_p[1], WHITE, BLACK, 5); tft.print("   ");}
-  else if(bar == maxOut-5){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("      "); setText(origin_p[0]+350 , origin_p[1], WHITE, BLACK, 5); tft.print("  ");}
-  else if(bar == maxOut-6){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("       "); setText(origin_p[0]+380 , origin_p[1], WHITE, BLACK, 5); tft.print(" ");}
-  else if(bar == maxOut-7){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("        "); } 
+       if(bar == maxOut  ){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print(" "); setText(origin_p[0]+200 , origin_p[1], WHITE, BLACK, 5); tft.print("      ");}
+  else if(bar == maxOut-1){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("  "); setText(origin_p[0]+230 , origin_p[1], WHITE, BLACK, 5); tft.print("     ");}
+  else if(bar == maxOut-2){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("   "); setText(origin_p[0]+260 , origin_p[1], WHITE, BLACK, 5); tft.print("    ");}
+  else if(bar == maxOut-3){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("    "); setText(origin_p[0]+290 , origin_p[1], WHITE, BLACK, 5); tft.print("   ");}
+  else if(bar == maxOut-4){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("     "); setText(origin_p[0]+320 , origin_p[1], WHITE, BLACK, 5); tft.print("  ");}
+  else if(bar == maxOut-5){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("      "); setText(origin_p[0]+350 , origin_p[1], WHITE, BLACK, 5); tft.print(" ");}
+  else if(bar == maxOut-6){ setText(origin_p[0]+170 , origin_p[1], WHITE, GREEN, 5); tft.print("       "); } 
 }
 boolean debounce(uint8_t port)
 {
@@ -58,9 +58,11 @@ boolean debounce(uint8_t port)
       {
         if(state == 1)
         {
-          update(); display(); delay(50);
+          update(); display(); delay(0);  
         }
+        guide_switch_update(port);
       }
+      guide_switch_setup();
       status = HIGH;
     }
   }
@@ -85,7 +87,7 @@ void sensor_update()
       if(dis > maxOut-max_tolerance)
       {
         info_update(ablity);
-        sound(true);
+        if(!sound_state) sound(true);
         count_add();
         sensor_state--;
       }
