@@ -92,7 +92,7 @@ void loop()
 {  
 /*--------------------------- read switch without debouncing switch ----------------------------*/   
   if(debounce(sw_port_1) && state_seq == 0) count_increase(); // counter value (+)
-  if(debounce(sw_port_2) && state_seq == 0) count_subtract(); // counter value (-)
+  if(debounce(sw_port_2) && state_seq == 0) count_decrease(); // counter value (-)
   if(debounce(sw_port_3) && (state_seq == -1 || state_seq == 0 || state_seq == 1)) 
   { /* start or stop action */
     if(sw_start_ftime) state_seq = 0;

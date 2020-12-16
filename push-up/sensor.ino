@@ -70,7 +70,7 @@ void count_increase() /* mannual increase counter value */
   if(counter_value == count_sound_active) sound_state = true;
   if(counter_value >  99) count_reset();
 }
-void count_subtract() /* mannual subtract counter value */
+void count_decrease() /* mannual decrease counter value */
 {
   counter_value--;
   if(counter_value < 0) count_reset();

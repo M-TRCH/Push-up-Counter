@@ -34,7 +34,7 @@ void info_display_setup()  /* infomation text layout setup */
 void guide_switch_setup() /* box guide switch layout setup */
 {
   tft.setRotation(GUIDE_SW_ROTATE); // rotation guide switch text only 
-  setText(origin_switch[0],     origin_switch[1]   , BLACK, CYAN, 2); tft.print("<< Subtract  ");
+  setText(origin_switch[0],     origin_switch[1]   , BLACK, CYAN, 2); tft.print("<< Decrease  ");
   setText(origin_switch[0]+160, origin_switch[1]   , BLACK, CYAN, 2); tft.print(" Increase >>");
   setText(origin_switch[0],     origin_switch[1]-20, WHITE, RED,  2); tft.print("  - Reset -  ");
   setText(origin_switch[0]+160, origin_switch[1]-20, WHITE, BLUE, 2); tft.print(" Start/Stop ");                     
@@ -71,7 +71,7 @@ void guide_switch_update(uint8_t port) /* refresh press button display */
 {
   tft.setRotation(4); // guide switch text only 
   
-       if(port == sw_port_2){ setText(origin_switch[0],     origin_switch[1],    BLACK, WHITE, 2); tft.print("<< Subtract  "); }
+       if(port == sw_port_2){ setText(origin_switch[0],     origin_switch[1],    BLACK, WHITE, 2); tft.print("<< Decrease  "); }
   else if(port == sw_port_1){ setText(origin_switch[0]+160, origin_switch[1],    BLACK, WHITE, 2); tft.print(" Increase >>");  }
   else if(port == sw_port_4){ setText(origin_switch[0],     origin_switch[1]-20, BLACK, WHITE, 2); tft.print("  - Reset -  "); }
   else if(port == sw_port_3){ setText(origin_switch[0]+160, origin_switch[1]-20, BLACK, WHITE, 2); tft.print(" Start/Stop ");  } 
